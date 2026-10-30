@@ -21,4 +21,16 @@ body {
   color: var(--color-brown);
 }
 
+/* En-tête */
+header {
+  background: var(--color-brown);
+  color: var(--color-amber);
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  font-family: 'Fraunces' serif;
+  margin: 0;
+}
 
