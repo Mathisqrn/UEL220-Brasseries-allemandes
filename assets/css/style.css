@@ -1,0 +1,24 @@
+/* Charte graphique  */
+:root {
+  --color-white: #F7F1E3;
+  --color-brown: #2B1D14;
+  --color-amber: #E8A33D;
+  --color-copper: #B5652B;
+}
+
+/* Base */
+*,
+*:after,
+*:before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--color-white);
+  color: var(--color-brown);
+}
+
+
