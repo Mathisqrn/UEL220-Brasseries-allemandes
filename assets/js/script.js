@@ -1,52 +1,41 @@
 $(document).ready(function() {
 
+    // fonction qui va call l'api pour recup les brasseries
     function chargerBrasseries() {
-        const ville = $('#ville').val();
-        const type = $('#type').val();
-        let apiUrl = 'https://api.openbrewerydb.org/breweries?by_state=Germany&per_page=50';
-        
-        if (ville) {
-            apiUrl += `&by_city=${encodeURIComponent(ville)}`;
-        }
+        // let pour pouvoir changer l'url plus tard si il y a besoin
+        let apiUrl = 'https://api.openbrewerydb.org/v1/breweries?by_country=germany&per_page=50';
 
-        if (type) {
-            apiUrl += `&by_type=${encodeURIComponent(type)}`;
-        }
-
+        // requête AJAX
         $.ajax({
-            url : apiUrl,
-            method : 'GET',
-            dataType : 'json',
-            success : function(data) {
+            url: apiUrl,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // on envoit la data recupérée à la fonction qui va l'afficher
                 afficherResultats(data);
             },
-            error : function(error) {
-                console.error('Erreur lors du chargement des brasseries :', error);
-                $('#resultats').html('<p>Une erreur est survenue lors du chargement des brasseries.</p>');
-                $('#compteur').empty();
+            error: function(error) {
+                console.error('Erreur API :', error);
+                $('#resultats').html('<p>Erreur lors du chargement des données.</p>');
             }
         });
     }
 
+    // on appelle la fonction direct pour que les brasseries s'affichent dès le début
     chargerBrasseries();
 
+    // fonction d'affichage
     function afficherResultats(brasseries) {
         const $resultats = $('#resultats');
         $resultats.empty();
-        $('#compteur').text(`${brasseries.length} brasseries trouvées`);
-
         brasseries.forEach(brasserie => {
-            const nom = brasserie.name || 'Nom inconnu';
-            const ville = brasserie.city || 'Ville inconnue';
-            const type = brasserie.brewery_type || 'Type inconnu';
-            const $carte = $('<div>').addClass('brasserie');
-
-            $('<h3>').text(nom).appendTo($carte);
-            $('<p>').text(`Ville : ${ville}`).appendTo($carte);
-            $('<p>').text(`Type : ${type}`).appendTo($carte);
-            $resultats.append($carte);
+            $resultats.append(`
+                <div>
+                    <h3>${brasserie.name}</h3>
+                    <p>${brasserie.city || 'Ville non précisée'}</p>
+                </div>
+            `);
         });
     }
 
-    $('#ville, #type').on('change', chargerBrasseries);
 });
