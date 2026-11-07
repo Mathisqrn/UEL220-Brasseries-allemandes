@@ -88,4 +88,36 @@ $(document).ready(function () {
 
     }
 
+
+
+    // function pour charger le total des brasseries allemandes
+    function chargerTotal() {
+        let apiUrl = "https://api.openbrewerydb.org/v1/breweries/meta"
+        return $.ajax({
+            url: apiUrl,
+            method: 'GET',
+            dataType: 'json',
+            data: { by_country: 'germany' },
+        });
+    }
+
+
+
+    // Gestion de la brasserie aléatoire
+    $('#aleatoire').on('click', function () {
+        $('#message').text("Chargement...");
+        chargerTotal()
+            .then(function (meta) {
+                const numeroAleatoire = Math.floor(Math.random() * meta.total) + 1;
+                return chargerBrasseries({ per_page: 1, page: numeroAleatoire });
+            })
+            .then(function (brasseries) {
+                afficherResultats(brasseries);
+                $('#message').text("Brasserie tirée au sort");
+            })
+            .catch(function (e) {
+                console.error(e);
+                $('#message').text("Impossible de contacter l’API");
+            });
+    });
 });
