@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    // fonction qui va call l'api pour recup les brasseries
+    // fonction qui va appeler l'api pour récupérer les brasseries
     function chargerBrasseries(data_recherche) {
         // let pour pouvoir changer l'url plus tard si il y a besoin
         let apiUrl = 'https://api.openbrewerydb.org/v1/breweries?by_country=germany&per_page=50';
