@@ -1,43 +1,59 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
-    // fonction qui va call l'api pour recup les brasseries
+    // fonction qui va appeler l'api pour récupérer les brasseries
     function chargerBrasseries(data_recherche) {
         // let pour pouvoir changer l'url plus tard si il y a besoin
-        let apiUrl = 'https://api.openbrewerydb.org/v1/breweries?by_country=germany&per_page=50';
+        let apiUrl = 'https://api.openbrewerydb.org/v1/breweries?by_country=germany';
 
         // requête AJAX
-        $.ajax({
+        return $.ajax({
             url: apiUrl,
             method: 'GET',
             dataType: 'json',
             data: data_recherche,
-            success: function(data) {
-                // on envoit la data recupérée à la fonction qui va l'afficher
-                afficherResultats(data);
-            },
-            error: function(error) {
-                console.error('Erreur API :', error);
-                $('#resultats').html('<p>Erreur lors du chargement des données.</p>');
-            }
         });
     }
 
-    $('#formulaire').on('submit', function(event){
+    $('#formulaire').on('submit', function (event) {
         event.preventDefault();
 
 
         let data_recherche = {}
-        if ($('#ville').val() !== ''){
+        if ($('#ville').val() !== '') {
             data_recherche.by_city = $('#ville').val(); /* empecher le script d'envoyer une valeur fausse comme data (et de n'etre pas obligé d'entrer une information) */
         }
-        if ($('#type').val() !== ''){
+        if ($('#type').val() !== '') {
             data_recherche.by_type = $('#type').val();
         }
-        
-        
+        if ($('#land').val() !== '') {
+            data_recherche.by_state = $('#land').val();
+        }
+        data_recherche.per_page = $('#number').val();
 
+        $('#message').text("Chargement...");
 
-        chargerBrasseries(data_recherche);
+        // Désactive la possibilité de cliquer sur le bouton d'envoi pour éviter le double-clic
+        $('button[type="submit"]').prop('disabled', true);
+
+        chargerBrasseries(data_recherche)
+
+            .then(function (brasseries) {
+                if (brasseries.length === 0) {
+                    $('#resultats').empty();
+                    $('#message').text("Aucune brasserie trouvée");
+                } else {
+                    afficherResultats(brasseries);
+                    $('#message').text( `${brasseries.length} brasserie(s) trouvée(s)`);
+                }
+            })
+            .catch(function (e) {
+                console.error(e);
+                $('#message').text("Impossible de contacter l’API");
+            }) 
+            .always(function () {
+                // Réactive le bouton
+                $('button[type="submit"]').prop('disabled', false);
+            })
     });
 
 
@@ -53,7 +69,7 @@ $(document).ready(function() {
                 </div>
             `);
         });
-        
+
     }
 
 });

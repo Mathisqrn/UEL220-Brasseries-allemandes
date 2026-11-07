@@ -18,16 +18,45 @@
     </header>
     <main>
         <form id="formulaire">
-            <label>Ville
+            <label>Ville :
                 <input type="text" id="ville" placeholder="Berlin">
             </label>
-            <label>Type
+            <label>Land :
+                <select name="land" id="land">
+                    <option value="">Tous</option>
+                    <option value="Baden-Württemberg">Baden-Württemberg</option>
+                    <option value="Bayern">Bayern</option>
+                    <option value="Berlin">Berlin</option>
+                    <option value="Brandenburg">Brandenburg</option>
+                    <option value="Bremen">Bremen</option>
+                    <option value="Hamburg">Hamburg</option>
+                    <option value="Hessen">Hessen</option>
+                    <option value="Mecklenburg-Vorpommern">Mecklenburg-Vorpommern</option>
+                    <option value="Niedersachsen">Niedersachsen</option>
+                    <option value="Nordrhein-Westfalen">Nordrhein-Westfalen</option>
+                    <option value="Rheinland-Pfalz">Rheinland-Pfalz</option>
+                    <option value="Saarland">Saarland</option>
+                    <option value="Sachsen">Sachsen</option>
+                    <option value="Sachsen-Anhalt">Sachsen-Anhalt</option>
+                    <option value="Schleswig-Holstein">Schleswig-Holstein</option>
+                    <option value="Thüringen">Thüringen</option>
+                </select>
+            </label>
+            <label>Type :
                 <select id="type">
                     <option value="">Tous</option>
+                    <option value="bar">Bar</option>
                     <option value="micro">Micro-brasserie</option>
                     <option value="brewpub">Brewpub</option>
-                    <option value="regional">Régionale</option>
+                    <option value="beergarden">Biergarten</option>
                     <option value="large">Grande brasserie</option>
+                </select>
+            </label>
+
+            <label>Nombre de résultats : 
+                <select name="number" id="number">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
                 </select>
             </label>
             <button type="submit">Rechercher</button>
