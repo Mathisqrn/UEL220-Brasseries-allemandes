@@ -38,18 +38,19 @@ $(document).ready(function () {
         chargerBrasseries(data_recherche)
 
             .then(function (brasseries) {
-                if (brasseries.length === 0) {
+                const ouvertes = brasseries.filter(brasserie => brasserie.brewery_type !== 'closed' && brasserie.brewery_type !== 'planning')
+                if (ouvertes.length === 0) {
                     $('#resultats').empty();
                     $('#message').text("Aucune brasserie trouvée");
                 } else {
-                    afficherResultats(brasseries);
-                    $('#message').text( `${brasseries.length} brasserie(s) trouvée(s)`);
+                    afficherResultats(ouvertes);
+                    $('#message').text(`${ouvertes.length} brasserie(s) trouvée(s)`);
                 }
             })
             .catch(function (e) {
                 console.error(e);
                 $('#message').text("Impossible de contacter l’API");
-            }) 
+            })
             .always(function () {
                 // Réactive le bouton
                 $('button[type="submit"]').prop('disabled', false);
@@ -62,13 +63,28 @@ $(document).ready(function () {
         const $resultats = $('#resultats');
         $resultats.empty();
         brasseries.forEach(brasserie => {
-            $resultats.append(`
-                <div>
-                    <h3>${brasserie.name}</h3>
-                    <p>${brasserie.city || 'Ville non précisée'}</p>
-                </div>
-            `);
+            const $carte = $('<div>').addClass('carte');
+            $('<span>').text(brasserie.brewery_type).addClass('type').appendTo($carte);
+            $('<h3>').text(brasserie.name).appendTo($carte);
+
+            const morceaux = [brasserie.address_1, brasserie.postal_code, brasserie.city];
+            const adresse = morceaux.filter(morceau => morceau).join(' ');
+            $('<p>').text(adresse || 'Adresse non précisée').appendTo($carte);
+            if (brasserie.phone) {
+                $('<p>').text(brasserie.phone).appendTo($carte);
+            }
+            if (brasserie.website_url) {
+                $('<a>').attr('href', brasserie.website_url).attr('target', "_blank").text('Site web').appendTo($carte);
+            }
+
+            const recherche = brasserie.name + ' ' + adresse;
+            const requete = encodeURIComponent(recherche);
+            $('<a>').attr('href', "https://www.google.com/maps/search/?api=1&query=" + requete).attr('target', "_blank").text('Voir sur Google Maps').appendTo($carte);
+            $carte.appendTo($resultats);
         });
+
+
+
 
     }
 
