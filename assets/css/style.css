@@ -1,0 +1,79 @@
+/* Charte graphique  */
+:root {
+  --color-white: #F7F1E3;
+  --color-brown: #2B1D14;
+  --color-amber: #E8A33D;
+  --color-copper: #B5652B;
+}
+
+/* Base */
+*,
+*:after,
+*:before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--color-white);
+  color: var(--color-brown);
+}
+
+/* En-tête */
+header {
+  background: var(--color-brown);
+  color: var(--color-amber);
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  font-family: 'Fraunces' serif;
+  margin: 0;
+}
+
+/* Principale */
+
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+
+/* Grille de cartes */
+
+#resultats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.carte {
+  background: white;
+  border-radius: 10px;
+  padding: 14px;
+  border: 1px solid black;
+}
+
+.carte h3 {
+  font-family: 'Fraunces', serif;
+  margin: 6px 0;
+}
+
+.type {
+  background: var(--color-white);
+  color: var(--color-brown);
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.carte a {
+  color: var(--color-copper);
+  font-size: 14px;
+  margin-right: 12px;
+}
