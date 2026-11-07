@@ -90,7 +90,7 @@ $(document).ready(function () {
 
 
 
-    // function pour charger le total des brasseries allemandes
+    // fonction pour charger le total des brasseries allemandes
     function chargerTotal() {
         let apiUrl = "https://api.openbrewerydb.org/v1/breweries/meta"
         return $.ajax({
@@ -118,6 +118,42 @@ $(document).ready(function () {
             .catch(function (e) {
                 console.error(e);
                 $('#message').text("Impossible de contacter l’API");
+            });
+    });
+
+
+    // fonction pour obtenir la position afin d'avoir les brasseries les plus proches.
+    function obtenirPosition() {
+        return new Promise(function (resolve, reject) {
+            navigator.geolocation.getCurrentPosition( resolve , reject );
+        });
+    }
+
+    // Gestion des brasseries les plus proches
+    $('#proche').on('click', function () {
+        $('#message').text("Localisation en cours...");
+        obtenirPosition()
+            .then(function (position) {
+                const coordonnees = position.coords.latitude + ',' + position.coords.longitude;
+                return chargerBrasseries({by_dist: coordonnees,per_page: 5});
+            })
+            .then(function (brasseries) {
+                const ouvertes = brasseries.filter(brasserie => brasserie.brewery_type !== 'closed' && brasserie.brewery_type !== 'planning')
+                if (ouvertes.length === 0) {
+                    $('#resultats').empty();
+                    $('#message').text("Aucune brasserie trouvée");
+                } else {
+                    afficherResultats(ouvertes);
+                    $('#message').text(`${ouvertes.length} brasserie(s) trouvée(s) autour de vous`);
+                }
+            })
+            .catch(function (e) {
+                if (e.code === 1) {
+                    $('#message').text("Vous avez refusé la localisation : impossible de trouver les brasseries proches");
+                } else {
+                    console.error(e);
+                    $('#message').text("Impossible de contacter l’API");
+                }
             });
     });
 });
