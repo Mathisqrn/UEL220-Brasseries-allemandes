@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     // fonction qui va call l'api pour recup les brasseries
-    function chargerBrasseries() {
+    function chargerBrasseries(data_recherche) {
         // let pour pouvoir changer l'url plus tard si il y a besoin
         let apiUrl = 'https://api.openbrewerydb.org/v1/breweries?by_country=germany&per_page=50';
 
@@ -10,6 +10,7 @@ $(document).ready(function() {
             url: apiUrl,
             method: 'GET',
             dataType: 'json',
+            data: data_recherche,
             success: function(data) {
                 // on envoit la data recupérée à la fonction qui va l'afficher
                 afficherResultats(data);
@@ -21,8 +22,24 @@ $(document).ready(function() {
         });
     }
 
-    // on appelle la fonction direct pour que les brasseries s'affichent dès le début
-    chargerBrasseries();
+    $('#formulaire').on('submit', function(event){
+        event.preventDefault();
+
+
+        let data_recherche = {}
+        if ($('#ville').val() !== ''){
+            data_recherche.by_city = $('#ville').val(); /* empecher le script d'envoyer une valeur fausse comme data (et de n'etre pas obligé d'entrer une information) */
+        }
+        if ($('#type').val() !== ''){
+            data_recherche.by_type = $('#type').val();
+        }
+        
+        
+
+
+        chargerBrasseries(data_recherche);
+    });
+
 
     // fonction d'affichage
     function afficherResultats(brasseries) {
@@ -36,6 +53,7 @@ $(document).ready(function() {
                 </div>
             `);
         });
+        
     }
 
 });
