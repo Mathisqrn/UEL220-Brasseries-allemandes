@@ -10,6 +10,8 @@
         rel="stylesheet">
     <!-- Feuille de style du site -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Feuille de style de la carte leaflet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 </head>
 
 <body>
@@ -70,10 +72,19 @@
             <button id="aleatoire" type="button">Brasserie au hasard</button>
             <button id="proche" type="button">Brasseries les plus proches</button>
         </div>
+        <!--On fait apparaitre ici les messages de réussite, d'erreur ou de chargement-->
         <p id="message"></p>
+
+        <!--Carte leaflet avec les marqueurs-->
+        <div id="carte-leaflet"></div>
+
+        <!-- Là où apparaissent les cartes-->
         <div id="resultats"></div>
     </main>
+    <!-- Importe le fichier jquery -->
     <script src="assets/js/jquery-4.0.0.js"></script>
+    <!-- Importe le fichier pour la carte leaflet -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <script src="assets/js/script.js"></script>
 </body>
 

@@ -122,6 +122,14 @@ button:disabled {
   margin-bottom: 20px;
 }
 
+/* Carte leaflet */
+
+#carte-leaflet {
+  height: 350px;
+  margin-bottom: 25px;
+  border-radius: 15px;
+}
+
 /* Grille de cartes */
 
 #resultats {
