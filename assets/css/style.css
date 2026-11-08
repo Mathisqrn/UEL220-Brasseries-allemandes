@@ -52,8 +52,74 @@ main {
   padding: 20px;
 }
 
+/* Formulaire */
+#formulaire {
+  background: white;
+  border-radius: 10px;
+  padding: 14px;
+  border: 1px solid var(--color-brown);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+}
 
+#formulaire label{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: small;
+  font-weight: 500;
+}
 
+#formulaire input, #formulaire select {
+  font: inherit;
+  padding: 10px;
+  border: solid 1px var(--color-brown);
+  border-radius: 10px;
+}
+
+button {
+  background-color: var(--color-copper);
+  color: var(--color-white);
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  border: none;
+}
+
+button:hover {
+  background-color: var(--color-brown);
+  color: var(--color-white);
+}
+
+button:disabled {
+  opacity: 50%;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0px;
+}
+
+.actions button {
+  background-color: transparent;
+  color: var(--color-copper);
+  border: solid 1px var(--color-copper);
+}
+
+.actions button:hover {
+  background-color: var(--color-brown);
+  color: var(--color-white);
+}
+
+#message {
+  font-weight: 500;
+  margin-bottom: 20px;
+}
 /* Grille de cartes */
 
 #resultats {
@@ -66,7 +132,8 @@ main {
   background: white;
   border-radius: 10px;
   padding: 14px;
-  border: 1px solid black;
+  border: 1px solid var(--color-brown);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .carte h3 {
