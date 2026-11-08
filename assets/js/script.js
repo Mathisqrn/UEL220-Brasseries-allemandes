@@ -39,11 +39,11 @@ $(document).ready(function () {
 
             .then(function (brasseries) {
                 const ouvertes = brasseries.filter(brasserie => brasserie.brewery_type !== 'closed' && brasserie.brewery_type !== 'planning')
+                afficherResultats(ouvertes);
                 if (ouvertes.length === 0) {
-                    $('#resultats').empty();
                     $('#message').text("Aucune brasserie trouvée");
                 } else {
-                    afficherResultats(ouvertes);
+                    
                     $('#message').text(`${ouvertes.length} brasserie(s) trouvée(s)`);
                 }
             })
@@ -102,6 +102,8 @@ $(document).ready(function () {
         // Zoom sur les résultats si il y en a
         if (marqueurs.getLayers().length > 0) {
             carteLeaflet.fitBounds(marqueurs.getBounds(), { maxZoom: 13 });
+        } else {
+            carteLeaflet.setView([51.16, 10.45], 6);
         }
     }
 
@@ -156,11 +158,10 @@ $(document).ready(function () {
             })
             .then(function (brasseries) {
                 const ouvertes = brasseries.filter(brasserie => brasserie.brewery_type !== 'closed' && brasserie.brewery_type !== 'planning')
+                afficherResultats(ouvertes);
                 if (ouvertes.length === 0) {
-                    $('#resultats').empty();
                     $('#message').text("Aucune brasserie trouvée");
                 } else {
-                    afficherResultats(ouvertes);
                     $('#message').text(`${ouvertes.length} brasserie(s) trouvée(s) autour de vous`);
                 }
             })
