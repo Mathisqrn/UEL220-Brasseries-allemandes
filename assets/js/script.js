@@ -82,10 +82,6 @@ $(document).ready(function () {
             $('<a>').attr('href', "https://www.google.com/maps/search/?api=1&query=" + requete).attr('target', "_blank").text('Voir sur Google Maps').appendTo($carte);
             $carte.appendTo($resultats);
         });
-
-
-
-
     }
 
 
