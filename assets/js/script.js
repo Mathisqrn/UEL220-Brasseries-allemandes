@@ -84,10 +84,17 @@ $(document).ready(function () {
             $('<a>').attr('href', "https://www.google.com/maps/search/?api=1&query=" + requete).attr('target', "_blank").text('Voir sur Google Maps').appendTo($carte);
 
             if (brasserie.latitude && brasserie.longitude) {
+                // Ajout d'un marqueur
                 const $bulle = $('<div>');
                 $('<strong>').text(brasserie.name).appendTo($bulle);
                 $('<p>').text(adresse).appendTo($bulle);
                 L.marker([brasserie.latitude, brasserie.longitude]).addTo(marqueurs).bindPopup($bulle[0]);
+
+                // Itinéraire 
+                const etape = brasserie.latitude + ',' + brasserie.longitude;
+                const $labelEtape = $('<label>').addClass('etape').appendTo($carte);
+                $('<input type="checkbox">').val(etape).appendTo($labelEtape);
+                $('<span>').text("Ajouter à l’itinéraire").appendTo($labelEtape);
             }
 
             $carte.appendTo($resultats);
@@ -165,6 +172,34 @@ $(document).ready(function () {
                     $('#message').text("Impossible de contacter l’API");
                 }
             });
+    });
+
+    // Gestion de l'itinéraire
+    $('#itineraire').on('click', function () {
+        // 1. Récupérer la valeur de chaque case cochée
+        const etapes = [];
+        $('#resultats input:checked').each(function () {
+            etapes.push($(this).val());
+        });
+
+        // 2. Il faut au moins un départ et une arrivée
+        if (etapes.length <= 1) {
+            $('#message').text("Cochez au moins deux brasseries pour créer un itinéraire");
+            return;
+        }
+
+        // 3. Construire l'adresse Google Maps
+        let url = 'https://www.google.com/maps/dir/?api=1'
+            + '&origin=' + encodeURIComponent(etapes[0])         // la première étape
+            + '&destination=' + encodeURIComponent(etapes[etapes.length - 1]);   // la dernière étape
+
+        const milieu = etapes.slice(1, -1);     // tout sauf la première et la dernière
+        if (milieu.length > 0) {
+            url += '&waypoints=' + encodeURIComponent(milieu.join('|'));
+        }
+
+        // 4. Ouvrir l'itinéraire dans un nouvel onglet
+        window.open(url, '_blank');
     });
 
 

@@ -173,6 +173,15 @@ button:disabled {
   margin-right: 12px;
 }
 
+.carte .etape {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+  font-size: small;
+  cursor: pointer;
+}
+
 /* Footer */
 footer {
   background: var(--color-brown);
