@@ -156,4 +156,8 @@ $(document).ready(function () {
                 }
             });
     });
+
+
+    // Affiche 10 brasseries dès le départ
+    $('#formulaire').trigger('submit');
 });
