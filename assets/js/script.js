@@ -62,6 +62,8 @@ $(document).ready(function () {
     function afficherResultats(brasseries) {
         const $resultats = $('#resultats');
         $resultats.empty();
+        // Vide les marqueurs
+        marqueurs.clearLayers();
         brasseries.forEach(brasserie => {
             const $carte = $('<div>').addClass('carte');
             $('<span>').text(brasserie.brewery_type).addClass('type').appendTo($carte);
@@ -80,8 +82,20 @@ $(document).ready(function () {
             const recherche = brasserie.name + ' ' + adresse;
             const requete = encodeURIComponent(recherche);
             $('<a>').attr('href', "https://www.google.com/maps/search/?api=1&query=" + requete).attr('target', "_blank").text('Voir sur Google Maps').appendTo($carte);
+
+            if (brasserie.latitude && brasserie.longitude) {
+                const $bulle = $('<div>');
+                $('<strong>').text(brasserie.name).appendTo($bulle);
+                $('<p>').text(adresse).appendTo($bulle);
+                L.marker([brasserie.latitude, brasserie.longitude]).addTo(marqueurs).bindPopup($bulle[0]);
+            }
+
             $carte.appendTo($resultats);
         });
+        // Zoom sur les résultats si il y en a
+        if (marqueurs.getLayers().length > 0) {
+            carteLeaflet.fitBounds(marqueurs.getBounds(), { maxZoom: 13 });
+        }
     }
 
 
@@ -121,7 +135,7 @@ $(document).ready(function () {
     // fonction pour obtenir la position afin d'avoir les brasseries les plus proches.
     function obtenirPosition() {
         return new Promise(function (resolve, reject) {
-            navigator.geolocation.getCurrentPosition( resolve , reject );
+            navigator.geolocation.getCurrentPosition(resolve, reject);
         });
     }
 
@@ -131,7 +145,7 @@ $(document).ready(function () {
         obtenirPosition()
             .then(function (position) {
                 const coordonnees = position.coords.latitude + ',' + position.coords.longitude;
-                return chargerBrasseries({by_dist: coordonnees,per_page: 5});
+                return chargerBrasseries({ by_dist: coordonnees, per_page: 5 });
             })
             .then(function (brasseries) {
                 const ouvertes = brasseries.filter(brasserie => brasserie.brewery_type !== 'closed' && brasserie.brewery_type !== 'planning')
@@ -152,6 +166,12 @@ $(document).ready(function () {
                 }
             });
     });
+
+
+    // Gestion de la carte leaflet 
+    const carteLeaflet = L.map('carte-leaflet').setView([51.16, 10.45], 6);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(carteLeaflet);
+    const marqueurs = L.featureGroup().addTo(carteLeaflet);
 
 
     // Affiche 10 brasseries dès le départ
