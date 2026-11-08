@@ -26,12 +26,22 @@ header {
   background: var(--color-brown);
   color: var(--color-amber);
   padding: 20px;
-  text-align: center;
+  display: flex;
+  gap: 20px;
 }
 
 header h1 {
-  font-family: 'Fraunces' serif;
+  font-family: 'Fraunces', serif;
   margin: 0;
+}
+
+header img {
+  height: 70px;
+  width: auto;
+}
+
+header .header-texte p {
+  color: var(--color-white);
 }
 
 /* Principale */
